@@ -26,7 +26,8 @@ file and you add the template data if you want)
 
 ```
 // gulpfile.js
-const gulpJsonHandlebars = require('gulp-json-handlebars');
+const handlebars = require('handlebars');
+const gulpJsonHandlebars = require('gulp-json-handlebars')(handlebars);
 const extensionReplace = require('gulp-ext-replace');
 
 const handlebarsOptions = {
