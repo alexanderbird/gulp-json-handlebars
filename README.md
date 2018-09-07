@@ -65,3 +65,7 @@ const minimalGetPageTemplate = () => `
 ## handlebarsOptions
 
 * `partialsDirectory` -- string or array of strings indicating paths to handlebars partials
+
+# Attribution
+
+Thanks to [gulp-handlebars-html](https://www.npmjs.com/package/gulp-handlebars-html), I adapted the partial registration stuff from there.

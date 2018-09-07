@@ -20,5 +20,10 @@
   "bugs": {
     "url": "https://github.com/alexanderbird/gulp-json-handlebars/issues"
   },
-  "homepage": "https://github.com/alexanderbird/gulp-json-handlebars#readme"
+  "homepage": "https://github.com/alexanderbird/gulp-json-handlebars#readme",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "gulp-util": "^3.0.8",
+    "through2": "^2.0.3"
+  }
 }
