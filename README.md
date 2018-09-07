@@ -66,6 +66,7 @@ const minimalGetPageTemplate = () => `
 ## handlebarsOptions
 
 * `partialsDirectory` -- string or array of strings indicating paths to handlebars partials
+* `supplementaryData` -- optional object, will be merged with the template data from the json that's piped through
 
 # Attribution
 
