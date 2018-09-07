@@ -69,3 +69,7 @@ const minimalGetPageTemplate = () => `
 # Attribution
 
 Thanks to [gulp-handlebars-html](https://www.npmjs.com/package/gulp-handlebars-html), I adapted the partial registration stuff from there.
+
+# Contribution
+
+I've extracted this from a personal project, which is why there are no tests are anything. If you'd like to contribute, you're welcome to -- but we'd probably have to start with writing some tests. 
