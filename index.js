@@ -30,7 +30,7 @@ function getDataFromBuffer(file, encoding) {
   return data;
 }
 
-function validateStuff(data, template, plugin) {
+function validateStuff(data, template, plugin, path) {
   const error = message => plugin.emit('error', new gutil.PluginError('gulp-json-handlebars', message));
   if(data._gulpJsonHandlebarsError) {
     error(`Can't parse \`${data.rawJson}\`. ${data.message}`);
@@ -38,7 +38,7 @@ function validateStuff(data, template, plugin) {
   }
 
   if(!data.meta || !data.meta.pageTemplate) {
-    error(`Missing meta.pageTemplate property`);
+    error(`Missing meta.pageTemplate property from ${path}`);
     return false;
   }
   if(!template) {
@@ -56,7 +56,7 @@ module.exports = function(options = {}, getPageTemplate = () => '') {
       global: options.supplementaryData
     });
     const template = getPageTemplate(data && data.meta && data.meta.pageTemplate);
-    if(!validateStuff(data, template, this)) {
+    if(!validateStuff(data, template, this, file.path)) {
       callback();
       return;
     }

@@ -19,8 +19,11 @@ testPlugin('gulp-json-handlebars', (it, itIgnoresNullFiles) => {
 
   it('errors if meta.pageTemplate is missing', {
     plugin: gulpJsonHandlebars({}, () => ''),
-    input: '{}',
-    error: /Missing meta.pageTemplate/
+    input: {
+      contents: '{}',
+      path: 'incomplete/meta-data.yaml',
+    },
+    error: /Missing meta.pageTemplate.*incomplete\/meta-data.yaml/
   });
 
   it('errors if getPageTemplate is missing', {
@@ -43,8 +46,14 @@ testPlugin('gulp-json-handlebars', (it, itIgnoresNullFiles) => {
 
   it('pipes the template and template data through handlebars', {
     plugin: gulpJsonHandlebars({}, () => 'Value of foo is {{foo}}, value of bar.baz is {{bar.baz}}'),
-    input: JSON.stringify({ meta: { pageTemplate: 'x' }, foo: 123, bar: { baz: 567 } }),
-    output: 'Value of foo is 123, value of bar.baz is 567'
+    input: {
+      contents: JSON.stringify({ meta: { pageTemplate: 'x' }, foo: 123, bar: { baz: 567 } }),
+      path: '/foo/bar.yaml'
+    },
+    output: {
+      contents: 'Value of foo is 123, value of bar.baz is 567',
+      path: '/foo/bar.yaml'
+    }
   });
 
   it('passes the meta.templateName to the getPageTemplate function', {
