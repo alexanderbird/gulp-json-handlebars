@@ -5,47 +5,63 @@ const gutil = require('gulp-util');
 
 const PartialRegistrator = require('./register-partials');
 
-function error(message) {
-  error.gulpPlugin.emit('error', new gutil.PluginError('gulp-json-handlebars', message));
-}
-
-function validateData(data, fileName) {
-  if (!data.meta || !data.meta.pageTemplate) {
-    error(`Missing meta.pageTemplate property in ${fileName}`);
-  }
-}
-
 function getDataFromFile(file, encoding) {
   if (file.isBuffer()) {
     return getDataFromBuffer(file, encoding);
   } else if (file.isStream()) {
-    error("Streams aren't supported yet, sorry");
+    throw new Error("Streams aren't supported yet, sorry");
   } else {
-    error('Expected a stream or a buffer, but got something different');
+    throw new Error('Expected a stream or a buffer, but got something different');
   }
 }
 
 function getDataFromBuffer(file, encoding) {
   const json = file.contents.toString(encoding);
-  const data = JSON.parse(json);
-  const fileName = file.history.shift();
-  validateData(data, fileName);
+  let data;
+  try {
+    data = JSON.parse(json);
+  } catch(e) {
+    return {
+      _gulpJsonHandlebarsError: true,
+      rawJson: json,
+      message: e.message
+    };
+  }
   return data;
 }
 
-module.exports = () => {
-  return function(options = {}, getPageTemplate = () => '') {
-    new PartialRegistrator(options).doIt();
+function validateStuff(data, template, plugin) {
+  const error = message => plugin.emit('error', new gutil.PluginError('gulp-json-handlebars', message));
+  if(data._gulpJsonHandlebarsError) {
+    error(`Can't parse \`${data.rawJson}\`. ${data.message}`);
+    return false;
+  }
 
-    return through.obj(function(file, encoding, callback) {
-      error.gulpPlugin = this;
-      const data = Object.assign({}, getDataFromFile(file, encoding), {
-        global: options.supplementaryData
-      });
-      const template = getPageTemplate(data.meta.pageTemplate);
-      const html = Handlebars.compile(template)(data);
-      file.contents = new Buffer.from(html);
-      callback(null, file);
+  if(!data.meta || !data.meta.pageTemplate) {
+    error(`Missing meta.pageTemplate property`);
+    return false;
+  }
+  if(!template) {
+    error('Expected the second parameter to be a function returning the handlebars template as a string (e.g. `templateName => handlebarsTemplateStringFo(templateName)`');
+    return false;
+  }
+  return true;
+}
+
+module.exports = function(options = {}, getPageTemplate = () => '') {
+  new PartialRegistrator(options).doIt();
+
+  return through.obj(function(file, encoding, callback) {
+    const data = Object.assign({}, getDataFromFile(file, encoding), {
+      global: options.supplementaryData
     });
-  };
-};
+    const template = getPageTemplate(data && data.meta && data.meta.pageTemplate);
+    if(!validateStuff(data, template, this)) {
+      callback();
+      return;
+    }
+    const html = Handlebars.compile(template)(data);
+    file.contents = new Buffer.from(html);
+    callback(null, file);
+  });
+}

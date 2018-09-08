@@ -26,8 +26,7 @@ file and you add the template data if you want)
 
 ```
 // gulpfile.js
-const handlebars = require('handlebars');
-const gulpJsonHandlebars = require('gulp-json-handlebars')(handlebars);
+const gulpJsonHandlebars = require('gulp-json-handlebars');
 const extensionReplace = require('gulp-ext-replace');
 
 const handlebarsOptions = {
@@ -74,4 +73,4 @@ Thanks to [gulp-handlebars-html](https://www.npmjs.com/package/gulp-handlebars-h
 
 # Contribution
 
-I've extracted this from a personal project, which is why there are no tests are anything. If you'd like to contribute, you're welcome to -- but we'd probably have to start with writing some tests. 
+PRs welcome, as long as they include appropriate tests and updates to the README.
