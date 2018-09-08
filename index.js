@@ -52,9 +52,10 @@ module.exports = function(options = {}, getPageTemplate = () => '') {
   new PartialRegistrator(options).doIt();
 
   return through.obj(function(file, encoding, callback) {
-    const data = Object.assign({}, getDataFromFile(file, encoding), {
+    const rawData = Object.assign({}, getDataFromFile(file, encoding), {
       global: options.supplementaryData
     });
+    const data = options.preProcessData ? options.preProcessData(rawData) : rawData;
     const template = getPageTemplate(data && data.meta && data.meta.pageTemplate);
     if(!validateStuff(data, template, this, file.path)) {
       callback();

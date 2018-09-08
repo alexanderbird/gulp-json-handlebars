@@ -66,6 +66,8 @@ const minimalGetPageTemplate = () => `
 
 * `partialsDirectory` -- string or array of strings indicating paths to handlebars partials
 * `supplementaryData` -- optional object, will be merged with the template data from the json that's piped through
+* `preProcessData` -- optional function which will be called with the data parsed from the json file. The return value
+  from this function will be used instead of the json data.
 
 # Attribution
 
