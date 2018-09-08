@@ -58,10 +58,13 @@ testPlugin('gulp-json-handlebars', (it, itIgnoresNullFiles) => {
 
   it('uses the data preprocessor if provided via options', {
     plugin: gulpJsonHandlebars({
-      preProcessData: data => Object.assign(data, { stuff: data.stuff.replace(/o/g, '0') })
-    }, () => '{{stuff}}'),
-    input: JSON.stringify({ meta: { pageTemplate: 'x' }, stuff: 'foo' }),
-    output: 'f00'
+      preProcessData: (data, path) => Object.assign(data, { stuff: data.stuff.replace(/o/g, '0'), path })
+    }, () => '{{stuff}} || {{path}}'),
+    input: {
+      contents: JSON.stringify({ meta: { pageTemplate: 'x' }, stuff: 'foo' }),
+      path: 'baz/quux.txt'
+    },
+    output: 'f00 || baz/quux.txt'
   });
 
   it('passes the meta.templateName to the getPageTemplate function', {
