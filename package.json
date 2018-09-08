@@ -30,6 +30,6 @@
   "devDependencies": {
     "jasmine": "^3.2.0",
     "jasmine-spec-reporter": "^4.2.1",
-    "test-your-gulp-plugin": "^1.0.1"
+    "test-your-gulp-plugin": "^1.0.2"
   }
 }

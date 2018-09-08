@@ -55,7 +55,7 @@ module.exports = function(options = {}, getPageTemplate = () => '') {
     const rawData = Object.assign({}, getDataFromFile(file, encoding), {
       global: options.supplementaryData
     });
-    const data = options.preProcessData ? options.preProcessData(rawData, file.path) : rawData;
+    const data = options.preProcessData ? options.preProcessData(rawData, file.relative) : rawData;
     const template = getPageTemplate(data && data.meta && data.meta.pageTemplate);
     if(!validateStuff(data, template, this, file.path)) {
       callback();
