@@ -3,14 +3,14 @@
  */
 
 const fs = require('fs');
+const Handlebars = require('handlebars');
 
 class PartialRegistrator {
-  constructor(options, Handlebars) {
+  constructor(options) {
     this._options = Object.assign(options, {
       maxDepth: 10,
       allowedExtensions: ['hb', 'hbs', 'handlebars', 'html'],
     });
-    this._Handlebars = Handlebars;
   }
 
   _isDir(filename) {
@@ -36,7 +36,7 @@ class PartialRegistrator {
     }
     const name = this._partialName(filename, base);
     const template = fs.readFileSync(filename, 'utf8');
-    this._Handlebars.registerPartial(name, template);
+    Handlebars.registerPartial(name, template);
   }
 
   _registerPartials(dir, base, depth) {

@@ -1,4 +1,5 @@
 const through = require('through2');
+const Handlebars = require('handlebars')
 const fs = require('fs');
 const gutil = require('gulp-util');
 
@@ -32,9 +33,9 @@ function getDataFromBuffer(file, encoding) {
   return data;
 }
 
-module.exports = Handlebars => {
+module.exports = () => {
   return function(options = {}, getPageTemplate = () => '') {
-    new PartialRegistrator(options, Handlebars).doIt();
+    new PartialRegistrator(options).doIt();
 
     return through.obj(function(file, encoding, callback) {
       error.gulpPlugin = this;
