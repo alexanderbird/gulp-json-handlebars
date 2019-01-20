@@ -81,4 +81,12 @@ testPlugin('gulp-json-handlebars', (it, itIgnoresNullFiles) => {
     input: JSON.stringify({ meta: { pageTemplate: 'x' }, catColor: 'green' }),
     output: 'The cat is green'
   });
+
+  it('properly registers svg files as partials', {
+    plugin: gulpJsonHandlebars({ partialsDirectory: 'test/fixtures' }, () => `{{> circle }}`),
+    input: JSON.stringify({ meta: { pageTemplate: 'x' }  }),
+    output: `<svg viewBox="0 0 20 20">
+  <circle cx="10" cy="10" r="10"/>
+</svg>`
+  });
 });

@@ -9,7 +9,7 @@ class PartialRegistrator {
   constructor(options) {
     this._options = Object.assign(options, {
       maxDepth: 10,
-      allowedExtensions: ['hb', 'hbs', 'handlebars', 'html'],
+      allowedExtensions: ['hb', 'hbs', 'handlebars', 'html', 'svg'],
     });
   }
 
